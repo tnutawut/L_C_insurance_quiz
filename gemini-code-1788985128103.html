@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>แบบทดสอบออนไลน์ - กรุงเทพประกันชีวิต</title>
+  <title>ตัวอย่างแนวทางการสอบ - การทดสอบขอใบอนุญาตตัวแทนประกันชีวิต</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
@@ -26,39 +26,58 @@
   </script>
   <style>
     body { font-family: 'Sarabun', sans-serif; }
+    @media print {
+      body * { visibility: hidden; }
+      #print-area, #print-area * { visibility: visible; }
+      #print-area { position: absolute; left: 0; top: 0; width: 100%; }
+      .no-print { display: none !important; }
+    }
   </style>
 </head>
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden min-h-[540px] flex flex-col justify-between p-6 relative border border-slate-200">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden min-h-[580px] flex flex-col justify-between p-6 relative border border-slate-200">
     
-    <!-- Header Logo -->
+    <!-- Header Logo (MTlogo ขยายใหญ่ขึ้น 3 เท่า) -->
     <div class="text-center pt-2 pb-4 border-b border-slate-100">
-      <!-- หากใช้รูปภาพในเครื่อง ให้เปลี่ยน src เป็นชื่อไฟล์รูปภาพ เช่น src="logo.png" -->
-      <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Bangkok_Life_Assurance_Logo.svg" 
-           alt="กรุงเทพประกันชีวิต Logo" 
-           class="h-12 mx-auto object-contain">
+      <img src="MTlogo.png" 
+           alt="MTlogo" 
+           class="h-36 mx-auto object-contain">
     </div>
 
     <!-- หน้าแรก (Welcome) -->
-    <div id="welcome-screen" class="flex flex-col justify-between h-full my-auto space-y-6 pt-4">
-      <div class="text-center space-y-3">
-        <div class="inline-block p-3.5 bg-bla-soft text-bla rounded-full mb-1">📝</div>
-        <h1 class="text-xl font-bold text-bla">แบบทดสอบความรู้ประกันภัย</h1>
-        <p class="text-slate-500 text-sm leading-relaxed">
+    <div id="welcome-screen" class="flex flex-col justify-between h-full my-auto space-y-5 pt-4">
+      <div class="text-center space-y-2">
+        <h1 class="text-lg font-bold text-bla leading-snug">
+          ตัวอย่างแนวทางการสอบ<br>
+          <span class="text-base font-semibold text-slate-700">การทดสอบขอใบอนุญาตตัวแทนประกันชีวิต</span>
+        </h1>
+        <p class="text-slate-500 text-xs leading-relaxed pt-1">
           ยินดีต้อนรับสู่แบบทดสอบทบทวนความรู้ <br>
           โปรดเลือกคำตอบที่ถูกต้องที่สุดเพียงข้อเดียวในแต่ละข้อ
         </p>
       </div>
 
-      <div class="bg-bla-soft/50 p-4 rounded-xl border border-blue-100 space-y-2 text-sm text-slate-600">
+      <div class="bg-bla-soft/50 p-3.5 rounded-xl border border-blue-100 space-y-1.5 text-xs text-slate-600">
         <div class="flex justify-between"><span>จำนวนข้อสอบ:</span> <span class="font-bold text-bla" id="total-questions-count">กำลังโหลด...</span></div>
         <div class="flex justify-between"><span>เกณฑ์การตัดสิน:</span> <span class="font-semibold text-slate-700">แสดงผลหลังทำเสร็จ</span></div>
       </div>
 
-      <button id="start-btn" disabled onclick="startQuiz()" class="w-full bg-slate-300 text-slate-500 font-semibold py-3.5 px-4 rounded-xl transition cursor-not-allowed">
-        กำลังโหลดข้อสอบ...
-      </button>
+      <div class="space-y-2.5">
+        <button id="start-btn" disabled onclick="startQuiz()" class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed">
+          กำลังโหลดข้อสอบ...
+        </button>
+        <button id="review-btn" disabled onclick="showReviewMode()" class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl border border-emerald-200 transition text-sm cursor-not-allowed opacity-50">
+          อ่านทบทวน
+        </button>
+        <button id="print-btn" disabled onclick="showPrintMode()" class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed opacity-50">
+          พิมพ์ตัวอย่างข้อสอบ
+        </button>
+      </div>
+
+      <div class="text-center pt-2 border-t border-slate-100">
+        <p class="text-xs font-semibold text-slate-500">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
+      </div>
     </div>
 
     <!-- หน้าทำแบบทดสอบ (Quiz) -->
@@ -69,7 +88,7 @@
           <span id="quiz-progress-text">1/1</span>
         </div>
         <div class="w-full bg-slate-100 h-2 rounded-full mb-5 overflow-hidden">
-          <div id="progress-bar" class="bg-bla h-full w-0 transition-all duration-300"></div>
+          <div id="progress-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
         </div>
 
         <h2 id="question-text" class="text-base font-bold text-slate-800 mb-5 leading-snug"></h2>
@@ -77,21 +96,63 @@
       </div>
 
       <div class="space-y-2.5 mt-6">
-        <button id="next-btn" onclick="nextQuestion()" disabled class="w-full bg-slate-200 text-slate-400 font-semibold py-3.5 px-4 rounded-xl transition cursor-not-allowed">
+        <button id="next-btn" onclick="nextQuestion()" disabled class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed">
           ถัดไป
         </button>
-        <button onclick="confirmEarlyFinish()" class="w-full bg-bla-orange hover:bg-bla-orangeHover text-white font-medium py-2.5 px-4 rounded-xl transition text-sm active:scale-[0.98]">
-          🏁 จบการทดสอบทันที
+        <button onclick="confirmEarlyFinish()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl transition text-sm active:scale-[0.98]">
+          จบการทดสอบทันที
         </button>
       </div>
     </div>
 
-    <!-- หน้าสรุปผลและเฉลย (Result) -->
+    <!-- หน้าอ่านทบทวน (Review Mode) -->
+    <div id="study-screen" class="hidden flex-col justify-between h-full space-y-4 pt-4">
+      <div>
+        <div class="text-center space-y-1 mb-3">
+          <h2 class="text-base font-bold text-slate-800">อ่านทบทวนข้อสอบและเฉลย</h2>
+          <p class="text-xs text-slate-500">เรียงตามลำดับข้อตั้งแต่ข้อ 1 ถึงข้อสุดท้าย</p>
+        </div>
+
+        <div id="study-list-container" class="space-y-3 max-h-[360px] overflow-y-auto pr-1 text-xs"></div>
+      </div>
+
+      <button onclick="backToHome()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98]">
+        กลับสู่หน้าหลัก
+      </button>
+    </div>
+
+    <!-- หน้าจัดพิมพ์ (Print Preview Mode) -->
+    <div id="print-screen" class="hidden flex-col justify-between h-full space-y-4 pt-4">
+      <div>
+        <div class="text-center space-y-1 mb-3">
+          <h2 class="text-base font-bold text-slate-800">เตรียมพิมพ์ตัวอย่างข้อสอบ (A4)</h2>
+          <p class="text-xs text-slate-500">เลือกตัวเลือกด้านล่างแล้วกดพิมพ์เอกสาร</p>
+        </div>
+
+        <div class="space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="checkbox" id="include-answers-check" class="rounded text-emerald-600 focus:ring-emerald-500">
+            <span class="text-slate-700 font-medium">แสดงเฉลยคำตอบในเอกสารพิมพ์</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="executePrint()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98]">
+          สั่งพิมพ์ออกทางเครื่องพิมพ์ / PDF
+        </button>
+        <button onclick="backToHome()" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-semibold py-2.5 px-4 rounded-xl transition text-sm">
+          ยกเลิก / กลับหน้าหลัก
+        </button>
+      </div>
+    </div>
+
+    <!-- หน้าสรุปผลและเฉลยหลังทำแบบทดสอบ (Result) -->
     <div id="result-screen" class="hidden flex-col justify-between h-full space-y-5 pt-4">
       <div>
         <div class="text-center space-y-1.5 mb-4">
           <h2 class="text-lg font-bold text-slate-800">ผลการทำแบบทดสอบ</h2>
-          <div class="text-3xl font-extrabold text-bla my-2" id="score-text">0 / 0</div>
+          <div class="text-3xl font-extrabold text-emerald-600 my-2" id="score-text">0 / 0</div>
           <p id="score-feedback" class="text-xs font-medium text-slate-500"></p>
         </div>
 
@@ -101,44 +162,56 @@
         <div id="review-container" class="space-y-3 max-h-[240px] overflow-y-auto pr-1 text-xs"></div>
       </div>
 
-      <button onclick="restartQuiz()" class="w-full bg-bla hover:bg-bla-dark text-white font-semibold py-3.5 px-4 rounded-xl shadow-md transition active:scale-[0.98]">
-        ทำแบบทดสอบอีกครั้ง
+      <button onclick="backToHome()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98]">
+        กลับสู่หน้าหลัก
       </button>
     </div>
 
   </div>
 
+  <!-- พื่นที่สำหรับ Print A4 เท่านั้น -->
+  <div id="print-area" class="hidden p-8 bg-white text-black leading-relaxed"></div>
+
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzHFMwYYsi15z7-aalsXp0uDcHbwT_L3KJH_S8q8b8bDAeP3mp8Q0dAslkXXG9hz7LVxA/exec";
 
-    let quizData = [];
+    let originalQuizData = []; // ข้อสอบตามลำดับเดิม 1..N
+    let quizData = [];         // ข้อสอบแบบสุ่มสำหรับทำแบบทดสอบ
     const prefixMap = ["ก.", "ข.", "ค.", "ง."];
     let currentQuestionIndex = 0;
     let selectedOptionIndex = null;
     let userAnswers = [];
 
-    // ฟังก์ชั่นสำหรับสุ่มลำดับข้อมูลใน Array (Fisher-Yates Shuffle)
     function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      return array;
+      return arr;
     }
 
     async function fetchQuestions() {
       try {
         const response = await fetch(GOOGLE_SHEET_API_URL);
-        const data = await response.json();
+        originalQuizData = await response.json();
 
-        // สุ่มลำดับข้อสอบเมื่อดึงข้อมูลสำเร็จ
-        quizData = shuffleArray(data);
-
-        document.getElementById('total-questions-count').innerText = `${quizData.length} ข้อ`;
+        document.getElementById('total-questions-count').innerText = `${originalQuizData.length} ข้อ`;
+        
+        // เปิดใช้งานปุ่มทั้งหมดด้วยสไตล์ธีมเขียวอ่อน
         const startBtn = document.getElementById('start-btn');
         startBtn.disabled = false;
         startBtn.innerText = "เริ่มทำแบบทดสอบ";
-        startBtn.className = "w-full bg-bla hover:bg-bla-dark text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/20 transition active:scale-[0.98] cursor-pointer";
+        startBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm cursor-pointer active:scale-[0.98]";
+
+        const reviewBtn = document.getElementById('review-btn');
+        reviewBtn.disabled = false;
+        reviewBtn.className = "w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-semibold py-2.5 px-4 rounded-xl border border-emerald-200 transition text-sm cursor-pointer opacity-100";
+
+        const printBtn = document.getElementById('print-btn');
+        printBtn.disabled = false;
+        printBtn.className = "w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-pointer opacity-100";
+
       } catch (error) {
         console.error("Error fetching quiz data:", error);
         document.getElementById('total-questions-count').innerText = "เกิดข้อผิดพลาดในการโหลด";
@@ -146,11 +219,11 @@
     }
 
     function startQuiz() {
-      if (quizData.length === 0) return;
+      if (originalQuizData.length === 0) return;
+      quizData = shuffleArray(originalQuizData);
       currentQuestionIndex = 0;
       userAnswers = [];
-      document.getElementById('welcome-screen').classList.add('hidden');
-      document.getElementById('result-screen').classList.add('hidden');
+      hideAllScreens();
       document.getElementById('quiz-screen').classList.remove('hidden');
       document.getElementById('quiz-screen').classList.add('flex');
       loadQuestion();
@@ -165,12 +238,11 @@
       const progressPercent = ((currentQuestionIndex + 1) / quizData.length) * 100;
       document.getElementById('progress-bar').style.width = `${progressPercent}%`;
 
-      // แสดงลำดับข้อที่ 1, 2, 3... เรียงตามปกติ
       document.getElementById('question-text').innerText = `ข้อ ${currentQuestionIndex + 1}. ${currentQuiz.question}`;
 
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = true;
-      nextBtn.className = "w-full bg-slate-200 text-slate-400 font-semibold py-3.5 px-4 rounded-xl transition cursor-not-allowed";
+      nextBtn.className = "w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed";
       nextBtn.innerText = (currentQuestionIndex === quizData.length - 1) ? "ส่งแบบทดสอบ" : "ถัดไป";
 
       const optionsContainer = document.getElementById('options-container');
@@ -178,11 +250,11 @@
 
       currentQuiz.options.forEach((option, index) => {
         const button = document.createElement('button');
-        button.className = `w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-bla hover:bg-bla-soft/40 transition flex items-start space-x-3 text-slate-700 font-medium text-sm`;
+        button.className = `w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition flex items-start space-x-3 text-slate-700 font-medium text-sm`;
         button.onclick = () => selectOption(index);
         button.id = `option-${index}`;
         button.innerHTML = `
-          <span class="font-bold text-bla min-w-[20px]">${prefixMap[index]}</span>
+          <span class="font-bold text-emerald-600 min-w-[20px]">${prefixMap[index]}</span>
           <span class="leading-relaxed">${option}</span>
         `;
         optionsContainer.appendChild(button);
@@ -195,7 +267,7 @@
       quizData[currentQuestionIndex].options.forEach((_, i) => {
         const btn = document.getElementById(`option-${i}`);
         if (i === index) {
-          btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-bla bg-bla-soft text-bla font-medium flex items-start space-x-3 text-sm shadow-sm";
+          btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-medium flex items-start space-x-3 text-sm shadow-sm";
         } else {
           btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 opacity-60 flex items-start space-x-3 text-slate-700 font-medium text-sm";
         }
@@ -203,7 +275,7 @@
 
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = false;
-      nextBtn.className = "w-full bg-bla hover:bg-bla-dark text-white font-semibold py-3.5 px-4 rounded-xl shadow-lg shadow-blue-900/20 transition active:scale-[0.98] cursor-pointer";
+      nextBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98] cursor-pointer";
     }
 
     function nextQuestion() {
@@ -236,8 +308,7 @@
     }
 
     function showResults() {
-      document.getElementById('quiz-screen').classList.add('hidden');
-      document.getElementById('quiz-screen').classList.remove('flex');
+      hideAllScreens();
       document.getElementById('result-screen').classList.remove('hidden');
       document.getElementById('result-screen').classList.add('flex');
 
@@ -258,7 +329,7 @@
         reviewCard.innerHTML = `
           <div class="font-bold text-slate-800 flex justify-between items-start">
             <span>ข้อ ${index + 1}. ${quiz.question}</span>
-            <span>${isCorrect ? '✔️' : '❌'}</span>
+            <span>${isCorrect ? 'ถูกต้อง' : 'ผิด'}</span>
           </div>
           <div class="text-[11px] space-y-1 mt-1">
             <div class="${isCorrect ? 'text-emerald-700 font-semibold' : 'text-rose-600 font-semibold'}">
@@ -286,10 +357,96 @@
       }
     }
 
-    function restartQuiz() {
-      // สุ่มลำดับข้อสอบใหม่อีกครั้งสำหรับการทำรอบใหม่
-      quizData = shuffleArray(quizData);
-      startQuiz();
+    // โหมดอ่านทบทวน (เรียงตามลำดับข้อสอบเดิม 1..N)
+    function showReviewMode() {
+      hideAllScreens();
+      document.getElementById('study-screen').classList.remove('hidden');
+      document.getElementById('study-screen').classList.add('flex');
+
+      const container = document.getElementById('study-list-container');
+      container.innerHTML = '';
+
+      originalQuizData.forEach((quiz, index) => {
+        const card = document.createElement('div');
+        card.className = "p-3.5 rounded-xl border border-emerald-100 bg-slate-50/80 space-y-2";
+        
+        let optionsHTML = quiz.options.map((opt, optIdx) => {
+          const isCorrect = optIdx === quiz.correctIndex;
+          return `
+            <div class="p-2 rounded-lg ${isCorrect ? 'bg-emerald-100 text-emerald-900 font-bold border border-emerald-300' : 'text-slate-600'}">
+              ${prefixMap[optIdx]} ${opt} ${isCorrect ? '(เฉลย)' : ''}
+            </div>
+          `;
+        }).join('');
+
+        card.innerHTML = `
+          <div class="font-bold text-slate-800 text-xs">ข้อที่ ${index + 1}. ${quiz.question}</div>
+          <div class="space-y-1 text-[11px]">${optionsHTML}</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // โหมดพิมพ์ข้อสอบ
+    function showPrintMode() {
+      hideAllScreens();
+      document.getElementById('print-screen').classList.remove('hidden');
+      document.getElementById('print-screen').classList.add('flex');
+    }
+
+    function executePrint() {
+      const showAnswers = document.getElementById('include-answers-check').checked;
+      const printArea = document.getElementById('print-area');
+      
+      let html = `
+        <div style="text-align: center; margin-bottom: 24px;">
+          <h2 style="font-size: 20px; font-weight: bold;">ตัวอย่างแนวทางการสอบ</h2>
+          <h3 style="font-size: 16px; font-weight: semi-bold;">การทดสอบขอใบอนุญาตตัวแทนประกันชีวิต</h3>
+          <p style="font-size: 12px; color: #555; margin-top: 4px;">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
+          <hr style="margin-top: 12px; border: 0.5px solid #ccc;">
+        </div>
+        <div style="font-size: 14px;">
+      `;
+
+      originalQuizData.forEach((quiz, index) => {
+        html += `
+          <div style="margin-bottom: 18px; page-break-inside: avoid;">
+            <p style="font-weight: bold; margin-bottom: 6px;">ข้อที่ ${index + 1}. ${quiz.question}</p>
+            <div style="margin-left: 16px;">
+        `;
+        quiz.options.forEach((opt, optIdx) => {
+          const isCorrect = showAnswers && (optIdx === quiz.correctIndex);
+          html += `
+            <p style="margin-bottom: 3px; ${isCorrect ? 'font-weight: bold; color: #059669;' : ''}">
+              ${prefixMap[optIdx]} ${opt} ${isCorrect ? ' (เฉลยถูกต้อง)' : ''}
+            </p>
+          `;
+        });
+        html += `</div></div>`;
+      });
+
+      html += `</div>`;
+      printArea.innerHTML = html;
+      printArea.classList.remove('hidden');
+
+      window.print();
+
+      printArea.classList.add('hidden');
+    }
+
+    function backToHome() {
+      hideAllScreens();
+      document.getElementById('welcome-screen').classList.remove('hidden');
+      document.getElementById('welcome-screen').classList.add('flex');
+    }
+
+    function hideAllScreens() {
+      const screens = ['welcome-screen', 'quiz-screen', 'result-screen', 'study-screen', 'print-screen'];
+      screens.forEach(id => {
+        const el = document.getElementById(id);
+        el.classList.add('hidden');
+        el.classList.remove('flex');
+      });
     }
 
     fetchQuestions();
