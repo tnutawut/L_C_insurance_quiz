@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ตัวอย่างแนวทางการสอบ - การทดสอบขอใบอนุญาตตัวแทนประกันชีวิต</title>
+  <title>ตัวอย่างแนวทางการสอบ - ขอใบอนุญาตตัวแทนประกันชีวิต</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script>
@@ -36,70 +36,70 @@
 </head>
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden min-h-[580px] flex flex-col justify-between p-6 relative border border-slate-200">
+  <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl overflow-hidden min-h-[640px] flex flex-col justify-between p-6 relative border border-slate-200">
     
-    <!-- Header Logo (MTlogo ขยายใหญ่ขึ้น 3 เท่า) -->
+    <!-- Header Logo (ขยายเพิ่มอีก 50%) -->
     <div class="text-center pt-2 pb-4 border-b border-slate-100">
       <img src="MTlogo.png" 
            alt="MTlogo" 
-           class="h-36 mx-auto object-contain">
+           class="h-52 mx-auto object-contain">
     </div>
 
     <!-- หน้าแรก (Welcome) -->
     <div id="welcome-screen" class="flex flex-col justify-between h-full my-auto space-y-5 pt-4">
       <div class="text-center space-y-2">
-        <h1 class="text-lg font-bold text-bla leading-snug">
+        <h1 class="text-xl font-bold text-slate-900 leading-snug">
           ตัวอย่างแนวทางการสอบ<br>
-          <span class="text-base font-semibold text-slate-700">การทดสอบขอใบอนุญาตตัวแทนประกันชีวิต</span>
+          <span class="text-lg font-bold text-bla">ขอใบอนุญาตตัวแทนประกันชีวิต</span>
         </h1>
-        <p class="text-slate-500 text-xs leading-relaxed pt-1">
+        <p class="text-slate-600 text-base leading-relaxed pt-1">
           ยินดีต้อนรับสู่แบบทดสอบทบทวนความรู้ <br>
           โปรดเลือกคำตอบที่ถูกต้องที่สุดเพียงข้อเดียวในแต่ละข้อ
         </p>
       </div>
 
-      <div class="bg-bla-soft/50 p-3.5 rounded-xl border border-blue-100 space-y-1.5 text-xs text-slate-600">
+      <div class="bg-bla-soft/50 p-4 rounded-xl border border-blue-100 space-y-2 text-base text-slate-700">
         <div class="flex justify-between"><span>จำนวนข้อสอบ:</span> <span class="font-bold text-bla" id="total-questions-count">กำลังโหลด...</span></div>
-        <div class="flex justify-between"><span>เกณฑ์การตัดสิน:</span> <span class="font-semibold text-slate-700">แสดงผลหลังทำเสร็จ</span></div>
+        <div class="flex justify-between"><span>เกณฑ์การตัดสิน:</span> <span class="font-semibold text-slate-800">แสดงผลหลังทำเสร็จ</span></div>
       </div>
 
-      <div class="space-y-2.5">
-        <button id="start-btn" disabled onclick="startQuiz()" class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed">
+      <div class="space-y-3">
+        <button id="start-btn" disabled onclick="startQuiz()" class="w-full bg-emerald-200 text-emerald-950 font-bold py-3 px-4 rounded-xl transition text-lg cursor-not-allowed">
           กำลังโหลดข้อสอบ...
         </button>
-        <button id="review-btn" disabled onclick="showReviewMode()" class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl border border-emerald-200 transition text-sm cursor-not-allowed opacity-50">
+        <button id="review-btn" disabled onclick="showReviewMode()" class="w-full bg-emerald-100 text-emerald-900 font-bold py-3 px-4 rounded-xl border border-emerald-300 transition text-lg cursor-not-allowed opacity-50">
           อ่านทบทวน
         </button>
-        <button id="print-btn" disabled onclick="showPrintMode()" class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed opacity-50">
+        <button id="print-btn" disabled onclick="showPrintMode()" class="w-full bg-emerald-100 text-emerald-900 font-bold py-3 px-4 rounded-xl transition text-lg cursor-not-allowed opacity-50">
           พิมพ์ตัวอย่างข้อสอบ
         </button>
       </div>
 
-      <div class="text-center pt-2 border-t border-slate-100">
-        <p class="text-xs font-semibold text-slate-500">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
+      <div class="text-center pt-3 border-t border-slate-100">
+        <p class="text-sm font-semibold text-slate-600">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
       </div>
     </div>
 
     <!-- หน้าทำแบบทดสอบ (Quiz) -->
     <div id="quiz-screen" class="hidden flex-col justify-between h-full pt-4">
       <div>
-        <div class="flex justify-between items-center text-xs font-semibold text-slate-400 mb-2">
-          <span id="question-number" class="text-bla font-bold">ข้อที่ 1</span>
-          <span id="quiz-progress-text">1/1</span>
+        <div class="flex justify-between items-center text-sm font-semibold text-slate-500 mb-2">
+          <span id="question-number" class="text-bla font-bold text-base">ข้อที่ 1</span>
+          <span id="quiz-progress-text" class="text-base">1/1</span>
         </div>
-        <div class="w-full bg-slate-100 h-2 rounded-full mb-5 overflow-hidden">
-          <div id="progress-bar" class="bg-emerald-500 h-full w-0 transition-all duration-300"></div>
+        <div class="w-full bg-slate-100 h-2.5 rounded-full mb-5 overflow-hidden">
+          <div id="progress-bar" class="bg-emerald-600 h-full w-0 transition-all duration-300"></div>
         </div>
 
-        <h2 id="question-text" class="text-base font-bold text-slate-800 mb-5 leading-snug"></h2>
-        <div id="options-container" class="space-y-2.5"></div>
+        <h2 id="question-text" class="text-xl font-bold text-slate-900 mb-5 leading-snug"></h2>
+        <div id="options-container" class="space-y-3"></div>
       </div>
 
-      <div class="space-y-2.5 mt-6">
-        <button id="next-btn" onclick="nextQuestion()" disabled class="w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed">
+      <div class="space-y-3 mt-6">
+        <button id="next-btn" onclick="nextQuestion()" disabled class="w-full bg-emerald-100 text-emerald-900 font-bold py-3 px-4 rounded-xl transition text-lg cursor-not-allowed">
           ถัดไป
         </button>
-        <button onclick="confirmEarlyFinish()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl transition text-sm active:scale-[0.98]">
+        <button onclick="confirmEarlyFinish()" class="w-full bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 font-bold py-3 px-4 rounded-xl transition text-lg active:scale-[0.98]">
           จบการทดสอบทันที
         </button>
       </div>
@@ -109,14 +109,14 @@
     <div id="study-screen" class="hidden flex-col justify-between h-full space-y-4 pt-4">
       <div>
         <div class="text-center space-y-1 mb-3">
-          <h2 class="text-base font-bold text-slate-800">อ่านทบทวนข้อสอบและเฉลย</h2>
-          <p class="text-xs text-slate-500">เรียงตามลำดับข้อตั้งแต่ข้อ 1 ถึงข้อสุดท้าย</p>
+          <h2 class="text-xl font-bold text-slate-900">อ่านทบทวนข้อสอบและเฉลย</h2>
+          <p class="text-sm text-slate-600">เรียงตามลำดับข้อตั้งแต่ข้อ 1 ถึงข้อสุดท้าย</p>
         </div>
 
-        <div id="study-list-container" class="space-y-3 max-h-[360px] overflow-y-auto pr-1 text-xs"></div>
+        <div id="study-list-container" class="space-y-3 max-h-[380px] overflow-y-auto pr-1 text-base"></div>
       </div>
 
-      <button onclick="backToHome()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98]">
+      <button onclick="backToHome()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition text-lg active:scale-[0.98]">
         กลับสู่หน้าหลัก
       </button>
     </div>
@@ -125,23 +125,23 @@
     <div id="print-screen" class="hidden flex-col justify-between h-full space-y-4 pt-4">
       <div>
         <div class="text-center space-y-1 mb-3">
-          <h2 class="text-base font-bold text-slate-800">เตรียมพิมพ์ตัวอย่างข้อสอบ (A4)</h2>
-          <p class="text-xs text-slate-500">เลือกตัวเลือกด้านล่างแล้วกดพิมพ์เอกสาร</p>
+          <h2 class="text-xl font-bold text-slate-900">เตรียมพิมพ์ตัวอย่างข้อสอบ (A4)</h2>
+          <p class="text-sm text-slate-600">เลือกตัวเลือกด้านล่างแล้วกดพิมพ์เอกสาร</p>
         </div>
 
-        <div class="space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-200 text-xs">
-          <label class="flex items-center space-x-2 cursor-pointer">
-            <input type="checkbox" id="include-answers-check" class="rounded text-emerald-600 focus:ring-emerald-500">
-            <span class="text-slate-700 font-medium">แสดงเฉลยคำตอบในเอกสารพิมพ์</span>
+        <div class="space-y-2 bg-slate-50 p-4 rounded-xl border border-slate-200 text-base">
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" id="include-answers-check" class="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500">
+            <span class="text-slate-800 font-medium">แสดงเฉลยคำตอบในเอกสารพิมพ์</span>
           </label>
         </div>
       </div>
 
-      <div class="space-y-2">
-        <button onclick="executePrint()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98]">
+      <div class="space-y-3">
+        <button onclick="executePrint()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition text-lg active:scale-[0.98]">
           สั่งพิมพ์ออกทางเครื่องพิมพ์ / PDF
         </button>
-        <button onclick="backToHome()" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-semibold py-2.5 px-4 rounded-xl transition text-sm">
+        <button onclick="backToHome()" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold py-3 px-4 rounded-xl transition text-lg">
           ยกเลิก / กลับหน้าหลัก
         </button>
       </div>
@@ -151,18 +151,18 @@
     <div id="result-screen" class="hidden flex-col justify-between h-full space-y-5 pt-4">
       <div>
         <div class="text-center space-y-1.5 mb-4">
-          <h2 class="text-lg font-bold text-slate-800">ผลการทำแบบทดสอบ</h2>
-          <div class="text-3xl font-extrabold text-emerald-600 my-2" id="score-text">0 / 0</div>
-          <p id="score-feedback" class="text-xs font-medium text-slate-500"></p>
+          <h2 class="text-xl font-bold text-slate-900">ผลการทำแบบทดสอบ</h2>
+          <div class="text-4xl font-extrabold text-emerald-700 my-2" id="score-text">0 / 0</div>
+          <p id="score-feedback" class="text-sm font-medium text-slate-600"></p>
         </div>
 
         <hr class="border-slate-100 my-3">
 
-        <h3 class="font-bold text-slate-700 mb-2 text-xs">ทบทวนคำตอบและเฉลย:</h3>
-        <div id="review-container" class="space-y-3 max-h-[240px] overflow-y-auto pr-1 text-xs"></div>
+        <h3 class="font-bold text-slate-800 mb-2 text-base">ทบทวนคำตอบและเฉลย:</h3>
+        <div id="review-container" class="space-y-3 max-h-[260px] overflow-y-auto pr-1 text-sm"></div>
       </div>
 
-      <button onclick="backToHome()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98]">
+      <button onclick="backToHome()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition text-lg active:scale-[0.98]">
         กลับสู่หน้าหลัก
       </button>
     </div>
@@ -198,19 +198,19 @@
 
         document.getElementById('total-questions-count').innerText = `${originalQuizData.length} ข้อ`;
         
-        // เปิดใช้งานปุ่มทั้งหมดด้วยสไตล์ธีมเขียวอ่อน
+        // เปิดใช้งานปุ่มทั้งหมด
         const startBtn = document.getElementById('start-btn');
         startBtn.disabled = false;
         startBtn.innerText = "เริ่มทำแบบทดสอบ";
-        startBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm cursor-pointer active:scale-[0.98]";
+        startBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-md transition text-lg cursor-pointer active:scale-[0.98]";
 
         const reviewBtn = document.getElementById('review-btn');
         reviewBtn.disabled = false;
-        reviewBtn.className = "w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-semibold py-2.5 px-4 rounded-xl border border-emerald-200 transition text-sm cursor-pointer opacity-100";
+        reviewBtn.className = "w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold py-3 px-4 rounded-xl border border-emerald-300 transition text-lg cursor-pointer opacity-100";
 
         const printBtn = document.getElementById('print-btn');
         printBtn.disabled = false;
-        printBtn.className = "w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-pointer opacity-100";
+        printBtn.className = "w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-950 font-bold py-3 px-4 rounded-xl transition text-lg cursor-pointer opacity-100";
 
       } catch (error) {
         console.error("Error fetching quiz data:", error);
@@ -242,7 +242,7 @@
 
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = true;
-      nextBtn.className = "w-full bg-emerald-100 text-emerald-400 font-semibold py-2.5 px-4 rounded-xl transition text-sm cursor-not-allowed";
+      nextBtn.className = "w-full bg-emerald-100 text-emerald-800 opacity-60 font-bold py-3 px-4 rounded-xl transition text-lg cursor-not-allowed";
       nextBtn.innerText = (currentQuestionIndex === quizData.length - 1) ? "ส่งแบบทดสอบ" : "ถัดไป";
 
       const optionsContainer = document.getElementById('options-container');
@@ -250,11 +250,11 @@
 
       currentQuiz.options.forEach((option, index) => {
         const button = document.createElement('button');
-        button.className = `w-full text-left p-3.5 rounded-xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50 transition flex items-start space-x-3 text-slate-700 font-medium text-sm`;
+        button.className = `w-full text-left p-4 rounded-xl border border-slate-300 hover:border-emerald-600 hover:bg-emerald-50 transition flex items-start space-x-3 text-slate-800 font-medium text-lg`;
         button.onclick = () => selectOption(index);
         button.id = `option-${index}`;
         button.innerHTML = `
-          <span class="font-bold text-emerald-600 min-w-[20px]">${prefixMap[index]}</span>
+          <span class="font-bold text-emerald-800 min-w-[24px]">${prefixMap[index]}</span>
           <span class="leading-relaxed">${option}</span>
         `;
         optionsContainer.appendChild(button);
@@ -267,15 +267,15 @@
       quizData[currentQuestionIndex].options.forEach((_, i) => {
         const btn = document.getElementById(`option-${i}`);
         if (i === index) {
-          btn.className = "w-full text-left p-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 font-medium flex items-start space-x-3 text-sm shadow-sm";
+          btn.className = "w-full text-left p-4 rounded-xl border-2 border-emerald-600 bg-emerald-50 text-emerald-950 font-bold flex items-start space-x-3 text-lg shadow-sm";
         } else {
-          btn.className = "w-full text-left p-3.5 rounded-xl border border-slate-200 opacity-60 flex items-start space-x-3 text-slate-700 font-medium text-sm";
+          btn.className = "w-full text-left p-4 rounded-xl border border-slate-200 opacity-60 flex items-start space-x-3 text-slate-800 font-medium text-lg";
         }
       });
 
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = false;
-      nextBtn.className = "w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2.5 px-4 rounded-xl shadow-sm transition text-sm active:scale-[0.98] cursor-pointer";
+      nextBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition text-lg active:scale-[0.98] cursor-pointer opacity-100";
     }
 
     function nextQuestion() {
@@ -324,19 +324,19 @@
         if (isCorrect) score++;
 
         const reviewCard = document.createElement('div');
-        reviewCard.className = `p-3 rounded-xl border ${isCorrect ? 'border-emerald-200 bg-emerald-50/40' : 'border-rose-200 bg-rose-50/40'} space-y-1.5`;
+        reviewCard.className = `p-3.5 rounded-xl border ${isCorrect ? 'border-emerald-300 bg-emerald-50/50' : 'border-rose-300 bg-rose-50/50'} space-y-1.5`;
         
         reviewCard.innerHTML = `
-          <div class="font-bold text-slate-800 flex justify-between items-start">
+          <div class="font-bold text-slate-900 flex justify-between items-start text-base">
             <span>ข้อ ${index + 1}. ${quiz.question}</span>
             <span>${isCorrect ? 'ถูกต้อง' : 'ผิด'}</span>
           </div>
-          <div class="text-[11px] space-y-1 mt-1">
-            <div class="${isCorrect ? 'text-emerald-700 font-semibold' : 'text-rose-600 font-semibold'}">
+          <div class="text-sm space-y-1 mt-1">
+            <div class="${isCorrect ? 'text-emerald-800 font-semibold' : 'text-rose-700 font-semibold'}">
               คำตอบของคุณ: ${prefixMap[userChoice]} ${quiz.options[userChoice]}
             </div>
             ${!isCorrect ? `
-              <div class="text-emerald-700 font-semibold">
+              <div class="text-emerald-800 font-semibold">
                 เฉลยที่ถูกต้อง: ${prefixMap[quiz.correctIndex]} ${quiz.options[quiz.correctIndex]}
               </div>
             ` : ''}
@@ -368,20 +368,20 @@
 
       originalQuizData.forEach((quiz, index) => {
         const card = document.createElement('div');
-        card.className = "p-3.5 rounded-xl border border-emerald-100 bg-slate-50/80 space-y-2";
+        card.className = "p-4 rounded-xl border border-emerald-200 bg-slate-50/90 space-y-2";
         
         let optionsHTML = quiz.options.map((opt, optIdx) => {
           const isCorrect = optIdx === quiz.correctIndex;
           return `
-            <div class="p-2 rounded-lg ${isCorrect ? 'bg-emerald-100 text-emerald-900 font-bold border border-emerald-300' : 'text-slate-600'}">
+            <div class="p-2.5 rounded-lg ${isCorrect ? 'bg-emerald-200 text-emerald-950 font-bold border border-emerald-400' : 'text-slate-700'}">
               ${prefixMap[optIdx]} ${opt} ${isCorrect ? '(เฉลย)' : ''}
             </div>
           `;
         }).join('');
 
         card.innerHTML = `
-          <div class="font-bold text-slate-800 text-xs">ข้อที่ ${index + 1}. ${quiz.question}</div>
-          <div class="space-y-1 text-[11px]">${optionsHTML}</div>
+          <div class="font-bold text-slate-900 text-base">ข้อที่ ${index + 1}. ${quiz.question}</div>
+          <div class="space-y-1.5 text-sm">${optionsHTML}</div>
         `;
         container.appendChild(card);
       });
@@ -400,12 +400,12 @@
       
       let html = `
         <div style="text-align: center; margin-bottom: 24px;">
-          <h2 style="font-size: 20px; font-weight: bold;">ตัวอย่างแนวทางการสอบ</h2>
-          <h3 style="font-size: 16px; font-weight: semi-bold;">การทดสอบขอใบอนุญาตตัวแทนประกันชีวิต</h3>
-          <p style="font-size: 12px; color: #555; margin-top: 4px;">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
+          <h2 style="font-size: 22px; font-weight: bold; color: #000;">ตัวอย่างแนวทางการสอบ</h2>
+          <h3 style="font-size: 18px; font-weight: bold; color: #0033A0;">ขอใบอนุญาตตัวแทนประกันชีวิต</h3>
+          <p style="font-size: 14px; color: #444; margin-top: 6px;">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
           <hr style="margin-top: 12px; border: 0.5px solid #ccc;">
         </div>
-        <div style="font-size: 14px;">
+        <div style="font-size: 15px;">
       `;
 
       originalQuizData.forEach((quiz, index) => {
@@ -417,7 +417,7 @@
         quiz.options.forEach((opt, optIdx) => {
           const isCorrect = showAnswers && (optIdx === quiz.correctIndex);
           html += `
-            <p style="margin-bottom: 3px; ${isCorrect ? 'font-weight: bold; color: #059669;' : ''}">
+            <p style="margin-bottom: 4px; ${isCorrect ? 'font-weight: bold; color: #047857;' : ''}">
               ${prefixMap[optIdx]} ${opt} ${isCorrect ? ' (เฉลยถูกต้อง)' : ''}
             </p>
           `;
