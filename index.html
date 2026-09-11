@@ -26,23 +26,18 @@
   </script>
   <style>
     body { font-family: 'Sarabun', sans-serif; }
-    @media print {
-      body * { visibility: hidden; }
-      #print-area, #print-area * { visibility: visible; }
-      #print-area { position: absolute; left: 0; top: 0; width: 100%; }
-      .no-print { display: none !important; }
-    }
   </style>
 </head>
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="w-full max-w-lg bg-white rounded-2xl shadow-xl overflow-hidden min-h-[640px] flex flex-col justify-between p-6 relative border border-slate-200">
+  <!-- แอพหลักบนหน้าจอ -->
+  <div id="app-container" class="w-full max-w-lg bg-white rounded-2xl shadow-xl overflow-hidden min-h-[640px] flex flex-col justify-between p-6 relative border border-slate-200">
     
-    <!-- Header Logo (ขยายเพิ่มอีก 50%) -->
+    <!-- Header Logo -->
     <div class="text-center pt-2 pb-4 border-b border-slate-100">
       <img src="MTlogo.png" 
            alt="MTlogo" 
-           class="h-52 mx-auto object-contain">
+           class="h-36 mx-auto object-contain">
     </div>
 
     <!-- หน้าแรก (Welcome) -->
@@ -71,7 +66,7 @@
           อ่านทบทวน
         </button>
         <button id="print-btn" disabled onclick="showPrintMode()" class="w-full bg-emerald-100 text-emerald-900 font-bold py-3 px-4 rounded-xl transition text-lg cursor-not-allowed opacity-50">
-          พิมพ์ตัวอย่างข้อสอบ
+          พิมพ์ตัวอย่างข้อสอบ / บันทึก PDF
         </button>
       </div>
 
@@ -121,25 +116,25 @@
       </button>
     </div>
 
-    <!-- หน้าจัดพิมพ์ (Print Preview Mode) -->
+    <!-- หน้าจัดพิมพ์ / บันทึก PDF -->
     <div id="print-screen" class="hidden flex-col justify-between h-full space-y-4 pt-4">
       <div>
         <div class="text-center space-y-1 mb-3">
-          <h2 class="text-xl font-bold text-slate-900">เตรียมพิมพ์ตัวอย่างข้อสอบ (A4)</h2>
-          <p class="text-sm text-slate-600">เลือกตัวเลือกด้านล่างแล้วกดพิมพ์เอกสาร</p>
+          <h2 class="text-xl font-bold text-slate-900">ตัวอย่างข้อสอบ (PDF / สั่งพิมพ์)</h2>
+          <p class="text-sm text-slate-600">เลือกตั้งค่าแล้วกดเปิดหน้าต่างตัวอย่าง</p>
         </div>
 
         <div class="space-y-2 bg-slate-50 p-4 rounded-xl border border-slate-200 text-base">
           <label class="flex items-center space-x-3 cursor-pointer">
             <input type="checkbox" id="include-answers-check" class="w-5 h-5 rounded text-emerald-600 focus:ring-emerald-500">
-            <span class="text-slate-800 font-medium">แสดงเฉลยคำตอบในเอกสารพิมพ์</span>
+            <span class="text-slate-800 font-medium">แสดงเฉลยคำตอบในเอกสาร</span>
           </label>
         </div>
       </div>
 
       <div class="space-y-3">
-        <button onclick="executePrint()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition text-lg active:scale-[0.98]">
-          สั่งพิมพ์ออกทางเครื่องพิมพ์ / PDF
+        <button id="trigger-print-btn" onclick="openPrintWindow()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition text-lg active:scale-[0.98]">
+          แสดงตัวอย่าง / บันทึก PDF / สั่งพิมพ์
         </button>
         <button onclick="backToHome()" class="w-full bg-emerald-100 hover:bg-emerald-200 text-emerald-900 font-bold py-3 px-4 rounded-xl transition text-lg">
           ยกเลิก / กลับหน้าหลัก
@@ -147,7 +142,7 @@
       </div>
     </div>
 
-    <!-- หน้าสรุปผลและเฉลยหลังทำแบบทดสอบ (Result) -->
+    <!-- หน้าสรุปผล -->
     <div id="result-screen" class="hidden flex-col justify-between h-full space-y-5 pt-4">
       <div>
         <div class="text-center space-y-1.5 mb-4">
@@ -159,7 +154,7 @@
         <hr class="border-slate-100 my-3">
 
         <h3 class="font-bold text-slate-800 mb-2 text-base">ทบทวนคำตอบและเฉลย:</h3>
-        <div id="review-container" class="space-y-3 max-h-[260px] overflow-y-auto pr-1 text-sm"></div>
+        <div id="review-container" class="space-y-3 max-h-[260px] overflow-y-auto pr-1"></div>
       </div>
 
       <button onclick="backToHome()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition text-lg active:scale-[0.98]">
@@ -169,14 +164,11 @@
 
   </div>
 
-  <!-- พื่นที่สำหรับ Print A4 เท่านั้น -->
-  <div id="print-area" class="hidden p-8 bg-white text-black leading-relaxed"></div>
-
   <script>
     const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzHFMwYYsi15z7-aalsXp0uDcHbwT_L3KJH_S8q8b8bDAeP3mp8Q0dAslkXXG9hz7LVxA/exec";
 
-    let originalQuizData = []; // ข้อสอบตามลำดับเดิม 1..N
-    let quizData = [];         // ข้อสอบแบบสุ่มสำหรับทำแบบทดสอบ
+    let originalQuizData = [];
+    let quizData = [];
     const prefixMap = ["ก.", "ข.", "ค.", "ง."];
     let currentQuestionIndex = 0;
     let selectedOptionIndex = null;
@@ -198,7 +190,6 @@
 
         document.getElementById('total-questions-count').innerText = `${originalQuizData.length} ข้อ`;
         
-        // เปิดใช้งานปุ่มทั้งหมด
         const startBtn = document.getElementById('start-btn');
         startBtn.disabled = false;
         startBtn.innerText = "เริ่มทำแบบทดสอบ";
@@ -326,12 +317,18 @@
         const reviewCard = document.createElement('div');
         reviewCard.className = `p-3.5 rounded-xl border ${isCorrect ? 'border-emerald-300 bg-emerald-50/50' : 'border-rose-300 bg-rose-50/50'} space-y-1.5`;
         
+        // ข้อ 2 & 3: ขนาดตัวอักษร "ถูกต้อง" / "ผิด" ใหญ่เท่าข้อ 1. ข้อ 2. (text-base font-bold) 
+        // และขนาดตัวหนังสือของคำถาม/คำตอบเท่ากันทุกข้อ (text-base)
         reviewCard.innerHTML = `
-          <div class="font-bold text-slate-900 flex justify-between items-start text-base">
-            <span>ข้อ ${index + 1}. ${quiz.question}</span>
-            <span>${isCorrect ? 'ถูกต้อง' : 'ผิด'}</span>
+          <div class="space-y-1">
+            <div class="text-base font-bold ${isCorrect ? 'text-emerald-800' : 'text-rose-800'}">
+              ${isCorrect ? 'ถูกต้อง' : 'ผิด'}
+            </div>
+            <div class="font-bold text-slate-900 text-base">
+              ข้อ ${index + 1}. ${quiz.question}
+            </div>
           </div>
-          <div class="text-sm space-y-1 mt-1">
+          <div class="text-base space-y-1 mt-2">
             <div class="${isCorrect ? 'text-emerald-800 font-semibold' : 'text-rose-700 font-semibold'}">
               คำตอบของคุณ: ${prefixMap[userChoice]} ${quiz.options[userChoice]}
             </div>
@@ -357,7 +354,6 @@
       }
     }
 
-    // โหมดอ่านทบทวน (เรียงตามลำดับข้อสอบเดิม 1..N)
     function showReviewMode() {
       hideAllScreens();
       document.getElementById('study-screen').classList.remove('hidden');
@@ -381,57 +377,87 @@
 
         card.innerHTML = `
           <div class="font-bold text-slate-900 text-base">ข้อที่ ${index + 1}. ${quiz.question}</div>
-          <div class="space-y-1.5 text-sm">${optionsHTML}</div>
+          <div class="space-y-1.5 text-base">${optionsHTML}</div>
         `;
         container.appendChild(card);
       });
     }
 
-    // โหมดพิมพ์ข้อสอบ
     function showPrintMode() {
       hideAllScreens();
       document.getElementById('print-screen').classList.remove('hidden');
       document.getElementById('print-screen').classList.add('flex');
     }
 
-    function executePrint() {
+    // หน้าการพิมพ์: ข้อ 1 - เหลือแค่เครื่องหมาย ✓ (สีเขียว) เอาข้อความ (เฉลยถูกต้อง) ออก
+    function openPrintWindow() {
       const showAnswers = document.getElementById('include-answers-check').checked;
-      const printArea = document.getElementById('print-area');
-      
-      let html = `
-        <div style="text-align: center; margin-bottom: 24px;">
-          <h2 style="font-size: 22px; font-weight: bold; color: #000;">ตัวอย่างแนวทางการสอบ</h2>
-          <h3 style="font-size: 18px; font-weight: bold; color: #0033A0;">ขอใบอนุญาตตัวแทนประกันชีวิต</h3>
-          <p style="font-size: 14px; color: #444; margin-top: 6px;">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
-          <hr style="margin-top: 12px; border: 0.5px solid #ccc;">
-        </div>
-        <div style="font-size: 15px;">
-      `;
+      const printWindow = window.open('', '_blank');
 
+      let questionsHTML = '';
       originalQuizData.forEach((quiz, index) => {
-        html += `
-          <div style="margin-bottom: 18px; page-break-inside: avoid;">
-            <p style="font-weight: bold; margin-bottom: 6px;">ข้อที่ ${index + 1}. ${quiz.question}</p>
-            <div style="margin-left: 16px;">
-        `;
+        let optionsHTML = '';
         quiz.options.forEach((opt, optIdx) => {
           const isCorrect = showAnswers && (optIdx === quiz.correctIndex);
-          html += `
-            <p style="margin-bottom: 4px; ${isCorrect ? 'font-weight: bold; color: #047857;' : ''}">
-              ${prefixMap[optIdx]} ${opt} ${isCorrect ? ' (เฉลยถูกต้อง)' : ''}
+          optionsHTML += `
+            <p style="margin: 3px 0; ${isCorrect ? 'font-weight: bold; color: #047857;' : 'color: #333;'}">
+              ${prefixMap[optIdx]} ${opt} ${isCorrect ? ' &#10003;' : ''}
             </p>
           `;
         });
-        html += `</div></div>`;
+
+        questionsHTML += `
+          <div style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 18px;">
+            <p style="font-weight: bold; margin: 0 0 6px 0;">ข้อที่ ${index + 1}. ${quiz.question}</p>
+            <div style="padding-left: 16px;">${optionsHTML}</div>
+          </div>
+        `;
       });
 
-      html += `</div>`;
-      printArea.innerHTML = html;
-      printArea.classList.remove('hidden');
+      const fullHTML = `
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+          <meta charset="UTF-8">
+          <title>ตัวอย่างข้อสอบ - ขอใบอนุญาตตัวแทนประกันชีวิต</title>
+          <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+          <style>
+            body {
+              font-family: 'Sarabun', sans-serif;
+              padding: 20px;
+              color: #1e293b;
+              max-width: 800px;
+              margin: 0 auto;
+            }
+            @media print {
+              body { padding: 0; }
+              @page { size: A4 portrait; margin: 15mm 12mm; }
+            }
+          </style>
+        </head>
+        <body>
+          <div style="text-align: center; margin-bottom: 24px;">
+            <h2 style="font-size: 20px; font-weight: bold; color: #000; margin: 0 0 6px 0;">ตัวอย่างแนวทางการสอบ</h2>
+            <h3 style="font-size: 16px; font-weight: bold; color: #0033A0; margin: 0 0 6px 0;">ขอใบอนุญาตตัวแทนประกันชีวิต</h3>
+            <p style="font-size: 13px; color: #444; margin: 0 0 12px 0;">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
+            <hr style="border: 0; border-top: 1px solid #ccc;">
+          </div>
+          <div style="font-size: 14px; line-height: 1.6;">
+            ${questionsHTML}
+          </div>
+          <script>
+            window.onload = function() {
+              setTimeout(function() {
+                window.print();
+              }, 500);
+            };
+          <\/script>
+        </body>
+        </html>
+      `;
 
-      window.print();
-
-      printArea.classList.add('hidden');
+      printWindow.document.write(fullHTML);
+      printWindow.document.close();
     }
 
     function backToHome() {
