@@ -26,6 +26,10 @@
   </script>
   <style>
     body { font-family: 'Sarabun', sans-serif; }
+    /* กำหนดระยะการขึ้นบรรทัดใหม่ให้ชิดกันทั่วทั้งระบบ */
+    .tight-line-height {
+      line-height: 1.25 !important;
+    }
   </style>
 </head>
 <body class="bg-slate-100 min-h-screen flex items-center justify-center p-4">
@@ -86,7 +90,7 @@
           <div id="progress-bar" class="bg-emerald-600 h-full w-0 transition-all duration-300"></div>
         </div>
 
-        <h2 id="question-text" class="text-xl font-bold text-slate-900 mb-5 leading-snug"></h2>
+        <h2 id="question-text" class="text-xl font-bold text-slate-900 mb-5 tight-line-height"></h2>
         <div id="options-container" class="space-y-3"></div>
       </div>
 
@@ -103,9 +107,8 @@
     <!-- หน้าอ่านทบทวน (Review Mode) -->
     <div id="study-screen" class="hidden flex-col justify-between h-full space-y-4 pt-4">
       <div>
-        <div class="text-center space-y-1 mb-3">
+        <div class="text-center mb-3">
           <h2 class="text-xl font-bold text-slate-900">อ่านทบทวนข้อสอบและเฉลย</h2>
-          <p class="text-sm text-slate-600">เรียงตามลำดับข้อตั้งแต่ข้อ 1 ถึงข้อสุดท้าย</p>
         </div>
 
         <div id="study-list-container" class="space-y-3 max-h-[380px] overflow-y-auto pr-1 text-base"></div>
@@ -174,6 +177,24 @@
     let selectedOptionIndex = null;
     let userAnswers = [];
 
+    // ฟังก์ชันจัดรูปแบบข้อความโจทย์ (ขึ้นบรรทัดใหม่ติดกันไม่ห่าง)
+    function formatQuestionText(text) {
+      if (!text) return '';
+      let formatted = text.replace(/[\s\r\n]*[\[\]]+[\s\r\n]*/g, '<br>').trim();
+      formatted = formatted.replace(/^(<br>)+|(<br>)+$/g, '');
+      formatted = formatted.replace(/\{([^}]+)\}/g, '<span class="font-normal">$1</span>');
+      return formatted;
+    }
+
+    // ฟังก์ชันสำหรับหน้า พิมพ์ / PDF
+    function formatQuestionForPrint(text) {
+      if (!text) return '';
+      let formatted = text.replace(/[\s\r\n]*[\[\]]+[\s\r\n]*/g, '<br>').trim();
+      formatted = formatted.replace(/^(<br>)+|(<br>)+$/g, '');
+      formatted = formatted.replace(/\{([^}]+)\}/g, '<span style="font-weight: normal;">$1</span>');
+      return formatted;
+    }
+
     function shuffleArray(array) {
       const arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
@@ -229,7 +250,7 @@
       const progressPercent = ((currentQuestionIndex + 1) / quizData.length) * 100;
       document.getElementById('progress-bar').style.width = `${progressPercent}%`;
 
-      document.getElementById('question-text').innerText = `ข้อ ${currentQuestionIndex + 1}. ${currentQuiz.question}`;
+      document.getElementById('question-text').innerHTML = `ข้อ ${currentQuestionIndex + 1}. ${formatQuestionText(currentQuiz.question)}`;
 
       const nextBtn = document.getElementById('next-btn');
       nextBtn.disabled = true;
@@ -282,17 +303,17 @@
     }
 
     function confirmEarlyFinish() {
-      if (selectedOptionIndex !== null) {
-        userAnswers.push(selectedOptionIndex);
-      }
+      const answeredCount = userAnswers.length + (selectedOptionIndex !== null ? 1 : 0);
       
-      const answeredCount = userAnswers.length;
-      if (answeredCount === 0) {
+      if (userAnswers.length === 0 && selectedOptionIndex === null) {
         if (confirm("คุณยังไม่ได้ตอบคำถามเลย ต้องการออกและดูผลคะแนนทันทีหรือไม่?")) {
           showResults();
         }
       } else {
         if (confirm(`คุณทำแบบทดสอบไปแล้ว ${answeredCount} ข้อ ต้องการจบการทดสอบเพื่อดูคะแนนทันทีหรือไม่?`)) {
+          if (selectedOptionIndex !== null) {
+            userAnswers.push(selectedOptionIndex);
+          }
           showResults();
         }
       }
@@ -317,15 +338,13 @@
         const reviewCard = document.createElement('div');
         reviewCard.className = `p-3.5 rounded-xl border ${isCorrect ? 'border-emerald-300 bg-emerald-50/50' : 'border-rose-300 bg-rose-50/50'} space-y-1.5`;
         
-        // ข้อ 2 & 3: ขนาดตัวอักษร "ถูกต้อง" / "ผิด" ใหญ่เท่าข้อ 1. ข้อ 2. (text-base font-bold) 
-        // และขนาดตัวหนังสือของคำถาม/คำตอบเท่ากันทุกข้อ (text-base)
         reviewCard.innerHTML = `
           <div class="space-y-1">
             <div class="text-base font-bold ${isCorrect ? 'text-emerald-800' : 'text-rose-800'}">
               ${isCorrect ? 'ถูกต้อง' : 'ผิด'}
             </div>
-            <div class="font-bold text-slate-900 text-base">
-              ข้อ ${index + 1}. ${quiz.question}
+            <div class="font-bold text-slate-900 text-base tight-line-height">
+              ข้อ ${index + 1}. ${formatQuestionText(quiz.question)}
             </div>
           </div>
           <div class="text-base space-y-1 mt-2">
@@ -354,6 +373,7 @@
       }
     }
 
+    // หน้าอ่านทบทวนข้อสอบและเฉลย (ปรับเปลี่ยนข้อความและแทนที่ด้วยเครื่องหมายถูกสีเขียว)
     function showReviewMode() {
       hideAllScreens();
       document.getElementById('study-screen').classList.remove('hidden');
@@ -370,13 +390,13 @@
           const isCorrect = optIdx === quiz.correctIndex;
           return `
             <div class="p-2.5 rounded-lg ${isCorrect ? 'bg-emerald-200 text-emerald-950 font-bold border border-emerald-400' : 'text-slate-700'}">
-              ${prefixMap[optIdx]} ${opt} ${isCorrect ? '(เฉลย)' : ''}
+              ${prefixMap[optIdx]} ${opt} ${isCorrect ? '<span class="text-emerald-700 font-extrabold ml-1">✓</span>' : ''}
             </div>
           `;
         }).join('');
 
         card.innerHTML = `
-          <div class="font-bold text-slate-900 text-base">ข้อที่ ${index + 1}. ${quiz.question}</div>
+          <div class="font-bold text-slate-900 text-base tight-line-height">ข้อที่ ${index + 1}. ${formatQuestionText(quiz.question)}</div>
           <div class="space-y-1.5 text-base">${optionsHTML}</div>
         `;
         container.appendChild(card);
@@ -389,7 +409,6 @@
       document.getElementById('print-screen').classList.add('flex');
     }
 
-    // หน้าการพิมพ์: ข้อ 1 - เหลือแค่เครื่องหมาย ✓ (สีเขียว) เอาข้อความ (เฉลยถูกต้อง) ออก
     function openPrintWindow() {
       const showAnswers = document.getElementById('include-answers-check').checked;
       const printWindow = window.open('', '_blank');
@@ -408,7 +427,7 @@
 
         questionsHTML += `
           <div style="page-break-inside: avoid; break-inside: avoid; margin-bottom: 18px;">
-            <p style="font-weight: bold; margin: 0 0 6px 0;">ข้อที่ ${index + 1}. ${quiz.question}</p>
+            <p style="font-weight: bold; margin: 0 0 4px 0; line-height: 1.25;">ข้อที่ ${index + 1}. ${formatQuestionForPrint(quiz.question)}</p>
             <div style="padding-left: 16px;">${optionsHTML}</div>
           </div>
         `;
@@ -442,7 +461,7 @@
             <p style="font-size: 13px; color: #444; margin: 0 0 12px 0;">จัดทำโดย นายณัฐวุฒิ ทมาภรณ์</p>
             <hr style="border: 0; border-top: 1px solid #ccc;">
           </div>
-          <div style="font-size: 14px; line-height: 1.6;">
+          <div style="font-size: 14px; line-height: 1.25;">
             ${questionsHTML}
           </div>
           <script>
